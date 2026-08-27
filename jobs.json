@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1787798932732,
+    "title": "Accounts Manager",
+    "salary": "12K-15K",
+    "location": "Meerut",
+    "qualification": "12+",
+    "experience": "2-3 Years",
+    "duty": "To Manage Accounts",
+    "room": "Not Available",
+    "food": "Available",
+    "description": "",
+    "status": "Active",
+    "createdAt": "2026-08-27T02:48:52.732Z"
+  },
+  {
+    "id": 1787806896632,
+    "title": "Driver",
+    "salary": "20K",
+    "location": "Noida",
+    "qualification": "10 Pass",
+    "experience": "1-2years",
+    "duty": "car driver",
+    "room": "Not Available",
+    "food": "Not Available",
+    "description": "",
+    "status": "Active",
+    "createdAt": "2026-08-27T05:01:36.632Z"
+  }
+]
