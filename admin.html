@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>S.M.P.C. Admin Panel</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #062b55;
+        }
+
+        header {
+            background: #062b55;
+            color: white;
+            padding: 20px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 25px;
+        }
+
+        header span {
+            color: #ff7417;
+            font-weight: bold;
+        }
+
+        .dashboard {
+            padding: 35px 6%;
+        }
+
+        .dashboard-title {
+            margin-bottom: 25px;
+        }
+
+        .dashboard-title h2 {
+            font-size: 32px;
+        }
+
+        .dashboard-title p {
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-card span {
+            font-size: 30px;
+        }
+
+        .stat-card h3 {
+            margin-top: 10px;
+            font-size: 30px;
+            color: #062b55;
+        }
+
+        .stat-card p {
+            color: #718096;
+        }
+
+        .applications-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .applications-box h2 {
+            margin-bottom: 20px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e5eaf0;
+        }
+
+        th {
+            background: #f4f7fb;
+            color: #062b55;
+        }
+
+        td {
+            color: #526575;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #fff1e8;
+            color: #ff7417;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .refresh-btn {
+            border: none;
+            background: #ff7417;
+            color: white;
+            padding: 10px 17px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .refresh-btn:hover {
+            background: #062b55;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #718096;
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard {
+                padding: 25px 4%;
+            }
+
+        }
+/* =========================
+   ADMIN LOGIN
+   ========================= */
+
+#loginScreen {
+    position: fixed;
+    inset: 0;
+    background: #062b55;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.login-box {
+    width: 360px;
+    max-width: 90%;
+    background: white;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.login-box h2 {
+    color: #062b55;
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+.login-box > p {
+    color: #718096;
+    margin-bottom: 25px;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.login-box input:focus {
+    border-color: #ff7417;
+    box-shadow: 0 0 0 3px rgba(255, 116, 23, 0.12);
+}
+
+.login-box button {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 7px;
+    background: #ff7417;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.login-box button:hover {
+    background: #062b55;
+}
+
+#loginError {
+    color: #dc2626;
+    font-size: 14px;
+    margin-top: 15px;
+}
+/* =========================
+   JOB MANAGEMENT
+========================= */
+
+.job-management {
+    background: white;
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.job-management h2 {
+    margin-bottom: 20px;
+    color: #062b55;
+}
+
+#jobForm {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+#jobForm input,
+#jobForm textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    box-sizing: border-box;
+    font-family: inherit;
+    outline: none;
+}
+
+#jobForm input:focus,
+#jobForm textarea:focus {
+    border-color: #ff7417;
+    box-shadow: 0 0 0 3px rgba(255, 116, 23, 0.12);
+}
+
+#jobForm textarea {
+    grid-column: 1 / -1;
+    resize: vertical;
+}
+
+#jobForm button {
+    grid-column: 1 / -1;
+    padding: 13px;
+    border: none;
+    border-radius: 7px;
+    background: #ff7417;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#jobForm button:hover {
+    background: #062b55;
+}
+
+#jobsList {
+    margin-top: 25px;
+}
+
+@media (max-width: 700px) {
+
+    #jobForm {
+        grid-template-columns: 1fr;
+    }
+
+    #jobForm textarea,
+    #jobForm button {
+        grid-column: auto;
+    }
+
+}
+/* JOB ACTION BUTTONS */
+
+.job-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.edit-job-btn,
+.delete-job-btn {
+    border: none;
+    padding: 9px 16px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.edit-job-btn {
+    background: #e8f1ff;
+    color: #0756a8;
+}
+
+.edit-job-btn:hover {
+    background: #0756a8;
+    color: white;
+}
+
+.delete-job-btn {
+    background: #ffe8e8;
+    color: #c62828;
+}
+
+.delete-job-btn:hover {
+    background: #c62828;
+    color: white;
+}
+
+.admin-job-card {
+    padding: 20px;
+    margin-top: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.admin-job-card h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+    </style>
+</head>
+
+<body>
+
+<div id="loginScreen">
+
+    <div class="login-box">
+
+        <h2>S.M.P.C.</h2>
+        <p>Admin Panel Login</p>
+
+        <input
+            type="text"
+            id="adminUsername"
+            placeholder="Username"
+        >
+
+        <input
+            type="password"
+            id="adminPassword"
+            placeholder="Password"
+        >
+
+        <button onclick="adminLogin()">
+            Login
+        </button>
+
+        <p id="loginError"></p>
+
+    </div>
+
+</div>
+
+    <header>
+
+        <h1>
+            S.M.P.C. <span>Admin Panel</span>
+        </h1>
+
+        <div>
+            Placement Management
+        </div>
+
+    </header>
+
+
+    <main class="dashboard">
+
+        <div class="dashboard-title">
+
+            <h2>
+                Dashboard
+            </h2>
+
+            <p>
+                Manage candidate applications
+            </p>
+
+        </div>
+
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <span>📋</span>
+
+                <h3 id="totalApplications">
+                    0
+                </h3>
+
+                <p>
+                    Total Applications
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>🆕</span>
+
+                <h3 id="newApplications">
+                    0
+                </h3>
+
+                <p>
+                    New Applications
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>💼</span>
+
+                <h3 id="totalJobs">
+                    1
+                </h3>
+
+                <p>
+                    Active Jobs
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="applications-box">
+<!-- JOB MANAGEMENT -->
+
+<div class="job-management">
+
+    <h2>Job Management</h2>
+
+    <form id="jobForm">
+
+        <input
+            type="text"
+            id="jobTitle"
+            placeholder="Job Title"
+            required
+        >
+
+        <input
+            type="text"
+            id="jobSalary"
+            placeholder="Salary"
+            required
+        >
+
+        <input
+            type="text"
+            id="jobLocation"
+            placeholder="Location"
+            required
+        >
+
+        <input
+            type="text"
+            id="jobQualification"
+            placeholder="Qualification"
+            required
+        >
+
+        <input
+            type="text"
+            id="jobExperience"
+            placeholder="Experience"
+        >
+
+        <input
+            type="text"
+            id="jobDuty"
+            placeholder="Duty / Work"
+        >
+
+        <input
+            type="text"
+            id="jobRoom"
+            placeholder="Room: Available / Not Available"
+        >
+
+        <input
+            type="text"
+            id="jobFood"
+            placeholder="Food: Available / Not Available"
+        >
+
+        <textarea
+            id="jobDescription"
+            placeholder="Job Description"
+            rows="4"
+        ></textarea>
+
+        <button type="submit">
+            ➕ Add New Job
+        </button>
+
+    </form>
+
+    <div id="jobsList"></div>
+
+</div>
+            <h2>
+                Candidate Applications
+            </h2>
+
+            <button
+                class="refresh-btn"
+                onclick="loadApplications()"
+            >
+                🔄 Refresh
+            </button>
+
+            <br><br>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Candidate
+                            </th>
+
+                            <th>
+                                Mobile
+                            </th>
+
+                            <th>
+                                Qualification
+                            </th>
+
+                            <th>
+                                Applied Job
+                            </th>
+
+                            <th>
+                                Message
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+                          <th>
+    Action
+</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="applicationsTable">
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                class="empty-message"
+                            >
+                                Loading applications...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        async function loadApplications() {
+
+            const table =
+                document.getElementById("applicationsTable");
+
+            try {
+
+                const response =
+                    await fetch(
+                        "http://localhost:3000/api/applications"
+                    );
+
+                const applications =
+                    await response.json();
+
+
+                document.getElementById(
+                    "totalApplications"
+                ).textContent =
+                    applications.length;
+
+
+                document.getElementById(
+                    "newApplications"
+                ).textContent =
+                    applications.length;
+
+
+                if (applications.length === 0) {
+
+                    table.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="empty-message">
+                                No applications found.
+                            </td>
+                        </tr>
+                    `;
+
+                    return;
+                }
+
+
+                table.innerHTML =
+                    applications.map(function (application) {
+
+                        const date =
+                            new Date(
+                                application.createdAt
+                            ).toLocaleString();
+
+
+                        return `
+                            <tr>
+
+                                <td>
+                                    ${application.name}
+                                </td>
+
+                                <td>
+                                    ${application.phone}
+                                </td>
+
+                                <td>
+                                    ${application.qualification}
+                                </td>
+
+                                <td>
+                                    ${application.job}
+                                </td>
+
+                                <td>
+                                    ${application.message || "N/A"}
+                                </td>
+
+                                <td>
+                                    ${date}
+                                </td>
+
+                                <td>
+                                    <span class="status">
+                                        New
+                                    </span>
+                                </td>
+<td>
+    <button
+        onclick="deleteApplication(${application.id})"
+        style="background:#ff4d4d;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;"
+    >
+        🗑️ Delete
+    </button>
+</td>
+                            </tr>
+                        `;
+
+                    }).join("");
+
+
+            } catch (error) {
+
+                table.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="empty-message">
+                            Unable to connect to backend.
+                            Please make sure the server is running.
+                        </td>
+                    </tr>
+                `;
+
+            }
+
+        }
+
+
+        loadApplications();
+// =========================
+// ADD JOB
+// =========================
+
+const jobForm = document.getElementById("jobForm");
+
+if (jobForm) {
+
+    jobForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+// EDIT MODE
+if (window.editingJobId) {
+
+    try {
+
+        const response = await fetch(
+            `http://localhost:3000/api/jobs/${window.editingJobId}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: document.getElementById("jobTitle").value.trim(),
+                    salary: document.getElementById("jobSalary").value.trim(),
+                    location: document.getElementById("jobLocation").value.trim(),
+                    qualification: document.getElementById("jobQualification").value.trim(),
+                    experience: document.getElementById("jobExperience").value.trim(),
+                    duty: document.getElementById("jobDuty").value.trim(),
+                    room: document.getElementById("jobRoom").value.trim(),
+                    food: document.getElementById("jobFood").value.trim(),
+                    description: document.getElementById("jobDescription").value.trim()
+                })
+            }
+        );
+
+        const result = await response.json();
+
+        if (result.success) {
+
+            alert("Job updated successfully!");
+
+            window.editingJobId = null;
+
+            jobForm.reset();
+
+            loadJobs();
+
+            return;
+
+        } else {
+
+            alert("Job update nahi ho payi.");
+            return;
+
+        }
+
+    } catch (error) {
+
+        alert("Backend se connection nahi ho pa raha.");
+        return;
+
+    }
+}
+        const job = {
+            title: document.getElementById("jobTitle").value.trim(),
+            salary: document.getElementById("jobSalary").value.trim(),
+            location: document.getElementById("jobLocation").value.trim(),
+            qualification: document.getElementById("jobQualification").value.trim(),
+            experience: document.getElementById("jobExperience").value.trim(),
+            duty: document.getElementById("jobDuty").value.trim(),
+            room: document.getElementById("jobRoom").value.trim(),
+            food: document.getElementById("jobFood").value.trim(),
+            description: document.getElementById("jobDescription").value.trim()
+        };
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:3000/api/jobs",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(job)
+                }
+            );
+
+            const result = await response.json();
+
+            if (!result.success) {
+                alert("Job add nahi ho payi.");
+                return;
+            }
+
+            alert("Job successfully added!");
+
+            jobForm.reset();
+
+            loadJobs();
+
+        } catch (error) {
+
+            alert(
+                "Backend se connection nahi ho pa raha."
+            );
+
+        }
+
+    });
+
+}
+// =========================
+// LOAD JOBS
+// =========================
+
+async function loadJobs() {
+
+    const jobsList =
+        document.getElementById("jobsList");
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:3000/api/jobs"
+            );
+
+        const jobs =
+            await response.json();
+             
+           document.getElementById("totalJobs").textContent = jobs.length; 
+
+        if (jobs.length === 0) {
+
+            jobsList.innerHTML = `
+                <p class="empty-message">
+                    No jobs added yet.
+                </p>
+            `;
+
+            return;
+        }
+
+
+        jobsList.innerHTML = jobs.map(function (job) {
+
+            return `
+    <div class="admin-job-card">
+
+        <h3>${job.title}</h3>
+
+        <p>💰 ${job.salary}</p>
+
+        <p>📍 ${job.location}</p>
+
+        <p>🎓 ${job.qualification}</p>
+
+        <p>🕒 ${job.experience || "Not specified"}</p>
+
+        <p>🛠️ ${job.duty || "Not specified"}</p>
+
+        <p>🏠 Room: ${job.room || "Not specified"}</p>
+
+        <p>🍽️ Food: ${job.food || "Not specified"}</p>
+
+        <span class="status">
+            ${job.status}
+        </span>
+
+        <div class="job-actions">
+
+            <button
+                type="button"
+                onclick="editJob(${job.id})"
+                class="edit-job-btn">
+                ✏️ Edit
+            </button>
+
+            <button
+                type="button"
+                onclick="deleteJob(${job.id})"
+                class="delete-job-btn">
+                🗑️ Delete
+            </button>
+
+        </div>
+
+    </div>
+`;
+        }).join("");
+
+
+    } catch (error) {
+
+        jobsList.innerHTML = `
+            <p class="empty-message">
+                Unable to load jobs.
+            </p>
+        `;
+
+    }
+
+}
+
+
+// Load jobs when Admin Panel opens
+loadJobs();
+// =========================
+// DELETE JOB
+// =========================
+
+async function deleteJob(id) {
+
+    const confirmDelete = confirm(
+        "Are you sure you want to delete this job?"
+    );
+
+    if (!confirmDelete) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `http://localhost:3000/api/jobs/${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const result = await response.json();
+
+        if (result.success) {
+
+            alert("Job deleted successfully!");
+
+            loadJobs();
+
+        } else {
+
+            alert("Job delete nahi ho payi.");
+
+        }
+
+    } catch (error) {
+
+        alert("Backend se connection nahi ho pa raha.");
+
+    }
+
+}
+
+
+// =========================
+// EDIT JOB
+// =========================
+
+async function editJob(id) {
+
+    const response = await fetch(
+        "http://localhost:3000/api/jobs"
+    );
+
+    const jobs = await response.json();
+
+    const job = jobs.find(
+        item => item.id === id
+    );
+
+    if (!job) {
+        alert("Job not found.");
+        return;
+    }
+
+    document.getElementById("jobTitle").value =
+        job.title || "";
+
+    document.getElementById("jobSalary").value =
+        job.salary || "";
+
+    document.getElementById("jobLocation").value =
+        job.location || "";
+
+    document.getElementById("jobQualification").value =
+        job.qualification || "";
+
+    document.getElementById("jobExperience").value =
+        job.experience || "";
+
+    document.getElementById("jobDuty").value =
+        job.duty || "";
+
+    document.getElementById("jobRoom").value =
+        job.room || "";
+
+    document.getElementById("jobFood").value =
+        job.food || "";
+
+    document.getElementById("jobDescription").value =
+        job.description || "";
+
+    window.editingJobId = id;
+
+    alert(
+        "Job details form mein aa gaye hain. Ab changes karke Add New Job button dabana."
+    );
+
+}
+async function adminLogin() {
+
+    const username =
+        document.getElementById("adminUsername").value.trim();
+
+    const password =
+        document.getElementById("adminPassword").value;
+
+    const error =
+        document.getElementById("loginError");
+
+    if (!username || !password) {
+        error.textContent = "Please enter username and password.";
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:3000/api/admin/login",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            }
+        );
+
+        const result = await response.json();
+
+        if (result.success) {
+
+            document.getElementById("loginScreen").style.display = "none";
+
+        } else {
+
+            error.textContent = "Invalid username or password.";
+
+        }
+
+    } catch (error) {
+
+        error.textContent =
+            "Backend is not running.";
+
+    }
+
+}
+async function deleteApplication(id) {
+    if (!confirm("Are you sure you want to delete this application?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/applications/${id}`, {
+            method: "DELETE"
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert("Application deleted successfully!");
+            loadApplications();
+        } else {
+            alert("Delete failed!");
+        }
+    } catch (error) {
+        console.error(error);
+        alert("Server error!");
+    }
+}
+    </script>
+
+</body>
+
+</html>
