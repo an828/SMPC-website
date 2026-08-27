@@ -820,7 +820,7 @@ async function loadPublicJobs() {
     try {
 
         const response =
-            await fetch("http://192.168.31.48:3000/api/jobs")
+            await fetch("/api/jobs")
 
         let jobs = await response.json();
 const searchText =
@@ -936,7 +936,7 @@ document.getElementById("locationFilter")
 loadPublicJobs();
 function viewJobDetails(id) {
 
-   fetch("http://192.168.31.48:3000/api/jobs")
+   fetch("/api/jobs")
         .then(response => response.json())
         .then(jobs => {
 
