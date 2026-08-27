@@ -645,7 +645,7 @@
 
                 const response =
                     await fetch(
-                        "http://localhost:3000/api/applications"
+                        "/api/applications"
                     );
 
                 const applications =
@@ -767,7 +767,7 @@ if (window.editingJobId) {
     try {
 
         const response = await fetch(
-            `http://localhost:3000/api/jobs/${window.editingJobId}`,
+            `/api/jobs/${window.editingJobId}`,
             {
                 method: "PUT",
                 headers: {
@@ -830,7 +830,7 @@ if (window.editingJobId) {
         try {
 
             const response = await fetch(
-                "http://localhost:3000/api/jobs",
+                "/api/jobs",
                 {
                     method: "POST",
                     headers: {
@@ -877,7 +877,7 @@ async function loadJobs() {
 
         const response =
             await fetch(
-                "http://localhost:3000/api/jobs"
+                "/api/jobs"
             );
 
         const jobs =
@@ -977,7 +977,7 @@ async function deleteJob(id) {
     try {
 
         const response = await fetch(
-            `http://localhost:3000/api/jobs/${id}`,
+            `/api/jobs/${id}`,
             {
                 method: "DELETE"
             }
@@ -1013,7 +1013,7 @@ async function deleteJob(id) {
 async function editJob(id) {
 
     const response = await fetch(
-        "http://localhost:3000/api/jobs"
+        "/api/jobs"
     );
 
     const jobs = await response.json();
@@ -1080,7 +1080,7 @@ async function adminLogin() {
     try {
 
         const response = await fetch(
-            "http://localhost:3000/api/admin/login",
+            "/api/admin/login",
             {
                 method: "POST",
                 headers: {
@@ -1119,7 +1119,7 @@ async function deleteApplication(id) {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/api/applications/${id}`, {
+        const response = await fetch(`/api/applications/${id}`, {
             method: "DELETE"
         });
 
