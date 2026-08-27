@@ -428,11 +428,10 @@
         <div class="job-modal-content">
 
 
-           <button
-    class="close-modal"
-    id="closeModal"
-    onclick="document.getElementById('jobModal').style.display='none'; document.getElementById('jobModal').classList.remove('active');"
->
+            <button
+                class="close-modal"
+                id="closeModal"
+            >
                 &times;
             </button>
 
@@ -821,7 +820,7 @@ async function loadPublicJobs() {
     try {
 
         const response =
-            await fetch("/api/jobs")
+            await fetch("http://192.168.31.48:3000/api/jobs")
 
         let jobs = await response.json();
 const searchText =
@@ -937,7 +936,7 @@ document.getElementById("locationFilter")
 loadPublicJobs();
 function viewJobDetails(id) {
 
-   fetch("/api/jobs")
+   fetch("http://192.168.31.48:3000/api/jobs")
         .then(response => response.json())
         .then(jobs => {
 
@@ -998,12 +997,14 @@ document.querySelector(".modal-contact-btn").href =
             modal.style.display = "flex";
 
         })
+        .catch(error => {
+
+            console.error("Job details error:", error);
+
+            alert("Backend se connection nahi ho pa raha.");
+
+        });
 }
-    document.getElementById("closeModal").addEventListener("click", function () {
-    const modal = document.getElementById("jobModal");
-    modal.classList.remove("active");
-    modal.style.display = "none";
-});
 document.getElementById("applicationForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
@@ -1011,7 +1012,7 @@ document.getElementById("applicationForm").addEventListener("submit", function(e
     const phone = document.getElementById("candidatePhone").value;
     const message = document.getElementById("candidateMessage").value;
     const job = document.getElementById("appliedJob").value;
-
+    const qualification = document.getElementById("candidateQualification").value;
     const whatsappMessage =
 `Hello S.M.P.C.,
 
@@ -1025,7 +1026,20 @@ ${message}
 Please share the application process and further details.
 
 Thank you.`;
-
+	
+await fetch("/api/applications", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        name: name,
+        phone: phone,
+        qualification: qualification,
+        job: job,
+        message: message
+    })
+});
     window.location.href =
         "https://wa.me/919411821570?text=" +
         encodeURIComponent(whatsappMessage);
