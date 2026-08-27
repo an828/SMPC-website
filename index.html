@@ -935,6 +935,15 @@ document.getElementById("jobSearch")
 document.getElementById("locationFilter")
     .addEventListener("change", loadPublicJobs);
 loadPublicJobs();
+const closeModal = document.getElementById("closeModal");
+const jobModal = document.getElementById("jobModal");
+
+if (closeModal && jobModal) {
+    closeModal.addEventListener("click", function () {
+        jobModal.classList.remove("active");
+        jobModal.style.display = "none";
+    });
+}
 function viewJobDetails(id) {
 
    fetch("/api/jobs")
