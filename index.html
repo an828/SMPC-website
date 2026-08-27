@@ -997,14 +997,12 @@ document.querySelector(".modal-contact-btn").href =
             modal.style.display = "flex";
 
         })
-        .catch(error => {
-
-            console.error("Job details error:", error);
-
-            alert("Backend se connection nahi ho pa raha.");
-
-        });
 }
+    document.getElementById("closeModal").addEventListener("click", function () {
+    const modal = document.getElementById("jobModal");
+    modal.classList.remove("active");
+    modal.style.display = "none";
+});
 document.getElementById("applicationForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
